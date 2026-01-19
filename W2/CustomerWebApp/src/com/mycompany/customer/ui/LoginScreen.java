@@ -1,6 +1,6 @@
-package com.mycompany.customer.data;
+package com.mycompany.customer.ui;
 
-public class CustomerDatabase {
+public class LoginScreen {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
