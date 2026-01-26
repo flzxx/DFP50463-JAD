@@ -18,6 +18,8 @@ public class ClinicAppointment {
 		
 		JButton confirmJButton = new JButton("Confirm Appointment");
 		
+		String[]
+		
 		frame.setSize(350, 200);
 		JPanel panel = new JPanel(new FlowLayout());
 		
