@@ -7,18 +7,39 @@ public class BMICalculator {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		JFrame mary = new JFrame("BMI Calculator 3.0 - Box Layout");
+		JFrame mary = new JFrame("BMI Calculator 3.0");
 		
 		JMenuBar menuBar = new JMenuBar();
 		JMenuItem helpMenu = new JMenu("Help");
+		JMenuItem fileMenu = new JMenu("File");
+		JMenuItem editMenu = new JMenu("Edit");
+		JMenuItem sourceMenu = new JMenu("Source");
+		JMenuItem refactorMenu = new JMenu("Refactor");
+		JMenuItem navigateMenu = new JMenu("Navigate");
+		JMenuItem searchMenu = new JMenu("Search");
+		JMenuItem projectMenu = new JMenu("Project");
+		JMenuItem runMenu = new JMenu("Run");
+		JMenuItem windowMenu = new JMenu("Window");
 		
 		JMenuItem aboutItem = new JMenuItem("About");
 		JMenuItem helpItem = new JMenuItem("Help");
 		
 		helpMenu.add(aboutItem);
+		helpMenu.add(helpItem);
 		helpMenu.add(helpMenu);
+
 		
+		menuBar.add(fileMenu);
+		menuBar.add(editMenu);
+		menuBar.add(sourceMenu);
+		menuBar.add(refactorMenu);
+		menuBar.add(navigateMenu);
+		menuBar.add(searchMenu);
+		menuBar.add(projectMenu);
+		menuBar.add(runMenu);
+		menuBar.add(windowMenu);
 		menuBar.add(helpMenu);
+	
 
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
@@ -70,6 +91,24 @@ public class BMICalculator {
 					resultBox.setForeground(Color.RED);
 				}
 				
+			}
+		});
+		
+		helpItem.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				JOptionPane.showConfirmDialog(mary, "BMI Calculator v1", "About BMI Calculator", JOptionPane.INFORMATION_MESSAGE);
+			}
+		});
+		
+		aboutItem.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				JOptionPane.showConfirmDialog(mary, "About BMI Calculator");
 			}
 		});
 		
