@@ -11,6 +11,7 @@ String user = (String) session.getAttribute("namapengguna");
 String rolename = (String) session.getAttribute("peranan");
 %>
 <body>
-<h2> Selamat Datang <%= user %>(<%= rolename %>) </h2>
+<h2 style = "text-transform: uppercase;"> Selamat Datang <%= user %>(<%= rolename %>) </h2>
+
 </body>
 </html>
