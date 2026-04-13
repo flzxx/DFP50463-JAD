@@ -1,0 +1,97 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" %>
+<%@ page import="java.sql.*" %>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register for Workshop</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f0f2f5; }
+        .container { max-width: 500px; margin: auto; background: white;
+                     padding: 30px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        h2 { color: #2c3e50; }
+        label { display: block; margin-top: 15px; font-weight: bold; }
+        input, select { width: 100%; padding: 8px; margin-top: 5px;
+                        border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        button { margin-top: 20px; padding: 10px 25px; background: #27ae60;
+                 color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; }
+        button:hover { background: #219150; }
+        .error { color: red; margin-top: 10px; }
+        a { color: #3498db; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Student Workshop Registration</h2>
+
+    <%-- Handle form submission --%>
+    <%
+        String message = "";
+        if ("POST".equalsIgnoreCase(request.getMethod())) {
+            String name     = request.getParameter("name");
+            String studId   = request.getParameter("student_id");
+            String workshop = request.getParameter("workshop");
+
+            if (name != null && !name.trim().isEmpty() &&
+                studId != null && !studId.trim().isEmpty() &&
+                workshop != null && !workshop.trim().isEmpty()) {
+
+                Connection conn = null;
+                try {
+                    Class.forName("com.mysql.cj.jdbc.Driver");
+                    conn = DriverManager.getConnection(
+                        "jdbc:mysql://localhost:3306/workshop_db", "root", "");
+
+                    PreparedStatement ps = conn.prepareStatement(
+                        "INSERT INTO students (name, student_id, workshop) VALUES (?, ?, ?)");
+                    ps.setString(1, name.trim());
+                    ps.setString(2, studId.trim());
+                    ps.setString(3, workshop);
+                    ps.executeUpdate();
+
+                    // Redirect to confirmation page
+                    response.sendRedirect("confirmation.jsp?name=" +
+                        java.net.URLEncoder.encode(name.trim(), "UTF-8") +
+                        "&student_id=" + java.net.URLEncoder.encode(studId.trim(), "UTF-8") +
+                        "&workshop=" + java.net.URLEncoder.encode(workshop, "UTF-8"));
+                    return;
+
+                } catch (SQLIntegrityConstraintViolationException e) {
+                    message = "Error: Student ID already registered!";
+                } catch (Exception e) {
+                    message = "Database error: " + e.getMessage();
+                } finally {
+                    if (conn != null) try { conn.close(); } catch (Exception e) {}
+                }
+            } else {
+                message = "All fields are required.";
+            }
+        }
+    %>
+
+    <% if (!message.isEmpty()) { %>
+        <p class="error"><%= message %></p>
+    <% } %>
+
+    <form method="post" action="register.jsp">
+        <label>Full Name:</label>
+        <input type="text" name="name" placeholder="e.g. Ahmad bin Ali" required>
+
+        <label>Student ID:</label>
+        <input type="text" name="student_id" placeholder="e.g. S12345" required>
+
+        <label>Select Workshop:</label>
+        <select name="workshop" required>
+            <option value="">-- Choose a Workshop --</option>
+            <option value="Web Development">Web Development</option>
+            <option value="Database Management">Database Management</option>
+            <option value="Cybersecurity Basics">Cybersecurity Basics</option>
+            <option value="Python Programming">Python Programming</option>
+            <option value="Cloud Computing">Cloud Computing</option>
+        </select>
+
+        <button type="submit">Register</button>
+    </form>
+    <br><a href="index.jsp">← Back to Home</a>
+</div>
+</body>
+</html>
