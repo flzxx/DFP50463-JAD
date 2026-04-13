@@ -1,0 +1,6 @@
+INDEX VERSION 1.4+C:\Users\P340\Desktop\PBA 2\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
+2677833782.index
+679373249.index
+260719527.index
+1744038344.index
+2586973297.index

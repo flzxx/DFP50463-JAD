@@ -1,0 +1,80 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" %>
+<%@ page import="java.sql.*" %>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>All Registrations</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f0f2f5; }
+        .container { max-width: 850px; margin: auto; background: white;
+                     padding: 30px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        h2 { color: #2c3e50; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th { background: #2c3e50; color: white; padding: 10px; text-align: left; }
+        td { padding: 10px; border-bottom: 1px solid #ddd; }
+        tr:hover { background: #f5f5f5; }
+        .edit-btn   { padding: 5px 12px; background: #f39c12; color: white;
+                      text-decoration: none; border-radius: 3px; }
+        .delete-btn { padding: 5px 12px; background: #e74c3c; color: white;
+                      text-decoration: none; border-radius: 3px; margin-left: 5px; }
+        a.home { color: #3498db; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>All Workshop Registrations</h2>
+
+    <%
+        Connection conn = null;
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            conn = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/workshop_db", "root", "yourpassword");
+
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(
+                "SELECT * FROM students ORDER BY registered_at DESC");
+    %>
+    <table>
+        <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Student ID</th>
+            <th>Workshop</th>
+            <th>Registered At</th>
+            <th>Actions</th>
+        </tr>
+        <%
+            int count = 0;
+            while (rs.next()) {
+                count++;
+        %>
+        <tr>
+            <td><%= count %></td>
+            <td><%= rs.getString("name") %></td>
+            <td><%= rs.getString("student_id") %></td>
+            <td><%= rs.getString("workshop") %></td>
+            <td><%= rs.getTimestamp("registered_at") %></td>
+            <td>
+                <a class="edit-btn"   href="edit.jsp?id=<%= rs.getInt("id") %>">Edit</a>
+                <a class="delete-btn" href="delete.jsp?id=<%= rs.getInt("id") %>"
+                   onclick="return confirm('Delete this registration?')">Delete</a>
+            </td>
+        </tr>
+        <% } %>
+        <% if (count == 0) { %>
+        <tr><td colspan="6" style="text-align:center;">No registrations found.</td></tr>
+        <% } %>
+    </table>
+    <%
+        } catch (Exception e) { %>
+        <p style="color:red;">Error: <%= e.getMessage() %></p>
+    <% } finally {
+        if (conn != null) try { conn.close(); } catch (Exception e) {}
+    } %>
+
+    <br><a class="home" href="register.jsp">+ New Registration</a> |
+    <a class="home" href="index.jsp">Home</a>
+</div>
+</body>
+</html>
